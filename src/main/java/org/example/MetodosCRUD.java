@@ -3,13 +3,16 @@ package org.example;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
 import com.mongodb.client.model.*;
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Indexes.descending;
 
 public class MetodosCRUD {
 
@@ -114,49 +117,64 @@ public class MetodosCRUD {
             System.out.println("Cantidad de documentos modificados: " + result.getModifiedCount());
             System.out.println("Documentos insertados nuevos por no estar con esa id antes: " + result.getUpsertedId());
         } catch (MongoException e) {
-            System.out.println("Imposible actualizar. Error: " + e);
+            System.out.println("Ha habido un problema al actualizar: " + e);
         }
     }
 
     //metodos borrar
 
     public static void borrarAlumno (String dniAlumno){
+
+        Document doc = new Document("dniAlumno", dniAlumno);
+        MongoCollection<Document> collection = Conexion.database.getCollection("Alumnos");
         try {
-            Document doc = new Document("dniAlumno", dniAlumno);
-            MongoCollection<Document> collection = Conexion.database.getCollection("Alumnos");
-            collection.deleteOne(doc);
+            DeleteResult res = collection.deleteMany(doc);
+            if (res.getDeletedCount()>0){
+                System.out.println("El alumno con el dni " + dniAlumno + " ha sido eliminado correctamente: " + res.getDeletedCount());
+            }
         } catch (MongoException e) {
-            System.out.println("Imposible actualizar. Error: " + e);
+            System.out.println("No se ha podido eliminar al alumno "+ dniAlumno);
         }
     }
 
+
     public static void borrarProfesores (String dniProfesor){
+        Document doc = new Document("dniProfesor", dniProfesor);
+        MongoCollection<Document> collection = Conexion.database.getCollection("Profesores");
         try {
-            Document doc = new Document("dniProfesor", dniProfesor);
-            MongoCollection<Document> collection = Conexion.database.getCollection("Profesores");
-            collection.deleteOne(doc);
+            DeleteResult res = collection.deleteMany(doc);
+            if (res.getDeletedCount()>0){
+                System.out.println("El profesor con el dni " + dniProfesor + " ha sido eliminado correctamente: " + res.getDeletedCount());
+            }
+
         } catch (MongoException e) {
-            System.out.println("Imposible actualizar. Error: " + e);
+            System.out.println("No se ha podido eliminar al profesor "+ dniProfesor);
         }
     }
 
     public static void borrarMatricula (String codigoMatricula){
+        Document doc = new Document("codigoMatricula", codigoMatricula);
+        MongoCollection<Document> collection = Conexion.database.getCollection("Matricula");
         try {
-            Document doc = new Document("codigoMatricula", codigoMatricula);
-            MongoCollection<Document> collection = Conexion.database.getCollection("Matricula");
-            collection.deleteOne(doc);
+            DeleteResult res = collection.deleteMany(doc);
+            if (res.getDeletedCount()>0){
+                System.out.println("La matricula con el codigo " + codigoMatricula + " ha sido eliminada correctamente: " + res.getDeletedCount());
+            }
         } catch (MongoException e) {
-            System.out.println("Imposible actualizar. Error: " + e);
+            System.out.println("No se ha podido eliminar la matricula "+ codigoMatricula);
         }
     }
 
     public static void borrarDepartamento (String codigoDepartamento){
+        Document doc = new Document("codigoDepartamento", codigoDepartamento);
+        MongoCollection<Document> collection = Conexion.database.getCollection("Departamento");
         try {
-            Document doc = new Document("codigoDepartamento", codigoDepartamento);
-            MongoCollection<Document> collection = Conexion.database.getCollection("Departamento");
-            collection.deleteOne(doc);
+            DeleteResult res = collection.deleteMany(doc);
+            if (res.getDeletedCount()>0){
+                System.out.println("El departamento con el codigo " + codigoDepartamento + " ha sido eliminado correctamente: " + res.getDeletedCount());
+            }
         } catch (MongoException e) {
-            System.out.println("Imposible actualizar. Error: " + e);
+            System.out.println("No se ha podido eliminar al departamento "+ codigoDepartamento);
         }
     }
 }

@@ -31,5 +31,44 @@ public class Conexion {
 
     }
 
+    //Métodos para relacionar las tablas entre sí
+    public static void setDepartamento(String dniProfesor,String codigoDepartamento){
+        MongoCollection<Document> profesores = database.getCollection("Profesores");
+        MongoCollection<Document> departamento = database.getCollection("Departamento");
+
+        Document doc=new Document("dniProfesor",dniProfesor); // Criterio de búsqueda
+        Document a = new Document("codigoDepartamento",codigoDepartamento); // Criterio de búsqueda
+
+        Document asigno = new Document("Departamento", departamento.find(a).first().getObjectId("_id"));
+        Document update = new Document("$set",asigno );
+
+        profesores.findOneAndUpdate(doc, update);
+    }
+
+    public static void setAlumno(String dniAlumno,String codigoMatricula){
+        MongoCollection<Document> alumnos = database.getCollection("Alumnos");
+        MongoCollection<Document> matricula = database.getCollection("Matricula");
+
+        Document doc = new Document("codigoMatricula", codigoMatricula); // Criterio de búsqueda
+        Document a=new Document("dniAlumno", dniAlumno); // Criterio de búsqueda
+
+        Document asigno = new Document("Alumno", alumnos.find(a).first().getObjectId("_id"));
+        Document update = new Document("$set",asigno );
+
+        matricula.findOneAndUpdate(doc, update);
+    }
+
+    public static void setProfesor(String dniProfesor,String codigoMatricula){
+        MongoCollection<Document> profesores = database.getCollection("Profesores");
+        MongoCollection<Document> matricula = database.getCollection("Matricula");
+
+        Document doc = new Document("codigoMatricula", codigoMatricula); // Criterio de búsqueda
+        Document a=new Document("dniProfesor", dniProfesor); // Criterio de búsqueda
+
+        Document asigno = new Document("Profesor", profesores.find(a).first().getObjectId("_id"));
+        Document update = new Document("$set",asigno );
+
+        matricula.findOneAndUpdate(doc, update);
+    }
 
 }
