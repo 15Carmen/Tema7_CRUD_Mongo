@@ -1,10 +1,8 @@
 package org.example;
 
-import java.time.LocalDate;
-
 public class Main {
     public static void main(String[] args) {
-        Conexion.conexionRemota();
+        Conexion.conexionRemotaInstituto();
 
         /**
          * Todos los metodos CRUD me funcionan A o(*≧▽≦)ツ︵ ┻━┻
@@ -18,4 +16,6 @@ public class Main {
         //Conexion.setAlumno("78451232L", "PROG_3_LCastillo1");
         //Conexion.setProfesor("12345678C", "PROG_3_LCastillo1");
     }
+
+
 }
